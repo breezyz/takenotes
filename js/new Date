@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title></title>
+  <script type="text/javascript" src="jquery-3.2.0.js"></script>
+	<style type="text/css">
+
+*{
+	margin: 0;
+	padding: 0;
+  list-style: none;
+}
+#list li{
+  width: 40px;
+  height: 40px;
+  background: #f46;
+  float: left;
+  margin-left: 10px;
+}
+
+</style>
+
+<script type="text/javascript">
+window.onload =  function() {
+
+   setInterval(nowTime,1000);  //它会隔1秒出来;e 后置性
+   nowTime();
+
+
+  function nowTime() {
+   var nowDate = new Date();
+   var newDate = new Date("March 28, 2017 21:46:55");
+   var t = parseInt((newDate - nowDate)/1000);  //newDate - nowDate是毫秒数  t是多少秒;
+
+   var ts =Math.floor(t%60);
+   var tmin = Math.floor(t%86400%3600/60);   //分钟
+   var thour = Math.floor(t%86400/3600);  //t%86400看有多少天
+   var tday = Math.floor(t/86400);  //60*60*24 = 86400
+   
+   
+   $(function() {
+      $('li').eq(0).html(thour);
+      $('li').eq(2).html(tmin);
+      $('li').eq(4).html(ts);
+
+   })
+  } 
+  
+}
+
+</script>
+</head>
+
+<body>
+<ul id="list">
+    <li></li>
+    <li>:</li>
+    <li></li>
+    <li>:</li>
+    <li></li>
+</ul>
+</body>
+</html>
