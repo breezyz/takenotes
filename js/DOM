@@ -1,0 +1,44 @@
+/*function showMes() {
+	alert('hello');
+}
+//DOM0级事件处理程序 
+var btn2 = document.getElementById('btn2');
+btn2.onclick = function (){  //匿名函数
+	alert('这是DOM0级');
+}
+btn2.onclick = null;  //删除onclick属性
+// DOM2级事件处理程序 
+var btn3 = document.getElementById('btn3');
+btn3.addEventListener('click', showMes,false);  //false可以兼容各种浏览器
+//用addEventListener方法只能用removeEventListener
+btn3.removeEventListener('click', showMes,false);
+//IE事件处理程序
+//attachEvent() 添加事件，detachEvent()删除事件，要加on
+//IE8及更低版本只支持事件冒泡处理*/
+
+//跨浏览器事件处理
+function eventUtil = {
+	//添加句柄
+	addHandler:function(element, type, handler){
+		if(element.addEventListener){
+			element.addEventListener(type, handler, false);	
+		}
+		else if(element.attachEvent){
+			element.attachEvent('on'+type, handler);
+		}
+		else{
+			element['on'+type]=handler;  //element['onclick'] === element.onclick
+	},
+	//删除句柄
+	addHandler:function(element, type, handler){
+		if(element.removeEventListener){
+			element.removeEventListener(type, handler, false);	
+		}
+		else if(element.detachEvent){
+			element.detachEvent('on'+type, handler);
+		}
+		else{
+			element['on'+type]=null ; 
+	},
+}
+eventUtil.addHandler(btn3, 'click', showMes);
