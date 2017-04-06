@@ -1,5 +1,29 @@
-/*function showMes() {
-	alert('hello');
+<!DOCTYPE html>
+<html>
+<head>
+	<title>事件流</title>
+	<meta charset="utf-8">
+	<script src="js.js"></script>
+</head>
+
+<body>
+<div id="box">
+	<input type="button" value="按钮" id="btn" onclick="alert('hello')">  <!-- HTML事件处理程序-->
+	<input type="button" value="按钮2" id="btn2" >  
+	<input type="button" value="按钮3" id="btn3" >  
+	
+</div>
+<script>
+//在触发DOM上的事件都会产生一个对象（事件对象event）
+//DOM事件对象有1.type(事件类型) 2.target[objectHTMLInputElement]（事件目标） target.nodeName INPUT
+//3.stopPropagation()阻止事件冒泡4.preventDeault()阻止事件默认行为
+//IE事件对象1.type(事件类型) 2.srcElement（事件目标）
+//3.cancelBubble属性阻止事件冒泡（true阻止冒泡）4.returnValue属性（false阻止默认行为）
+var btn3 = document.getElementById('btn3');
+function showMes(e) {
+	e = e || window.e  //IE8之前浏览器
+	var ele = e.target || e.srcElement;
+	alert(e.target.nodeName);
 }
 //DOM0级事件处理程序 
 var btn2 = document.getElementById('btn2');
@@ -14,10 +38,12 @@ btn3.addEventListener('click', showMes,false);  //false可以兼容各种浏览�
 btn3.removeEventListener('click', showMes,false);
 //IE事件处理程序
 //attachEvent() 添加事件，detachEvent()删除事件，要加on
-//IE8及更低版本只支持事件冒泡处理*/
+//IE8及更低版本只支持事件冒泡处理
+</script>
+</body>
+</html>
 
-//跨浏览器事件处理
-function eventUtil = {
+var eventUtil = {
 	//添加句柄
 	addHandler:function(element, type, handler){
 		if(element.addEventListener){
@@ -28,9 +54,10 @@ function eventUtil = {
 		}
 		else{
 			element['on'+type]=handler;  //element['onclick'] === element.onclick
+		}
 	},
 	//删除句柄
-	addHandler:function(element, type, handler){
+	removeHandler:function(element, type, handler){
 		if(element.removeEventListener){
 			element.removeEventListener(type, handler, false);	
 		}
@@ -39,6 +66,32 @@ function eventUtil = {
 		}
 		else{
 			element['on'+type]=null ; 
+		}
 	},
+	getType:function(event){
+		return event.type;
+	},
+	getTarget:function(event){
+		return evnet.target || event.srcElemnt;
+	},
+	getEvent:function(event) { 
+		return event ? event : window.event;
+	},
+	preventDefault:function(event) {
+		if(event.preventDefault) {
+			event.preventDefault();
+		}
+		else{
+			event.returnValue = false;
+		}
+	},
+	stopPropagation:function(event) {
+		if(event.stopPropagation) {
+			event.stopPropagation();
+		}
+		else{
+			event.cancelBubble = true;
+		}
+	}
 }
 eventUtil.addHandler(btn3, 'click', showMes);
